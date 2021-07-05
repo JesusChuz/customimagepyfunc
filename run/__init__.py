@@ -1,9 +1,6 @@
 import logging
 
 import azure.functions as func
-import pandas as pd
-from io import BytesIO, StringIO
-import csv
 from azureml.core import Workspace
 from azureml.core import Datastore
 from azureml.core import Experiment
@@ -22,19 +19,12 @@ def main(req: func.HttpRequest, context: func.Context) -> func.HttpResponse:
 
     logging.info("got workspace")
     
-    # get the datastore to upload prepared data
     datastore = Datastore.get(ws, "workspaceblobstore")
     logging.info("got datastore")
     logging.info(datastore)
 
-    #exp = Experiment(workspace=ws, name="auto-2-2-21")
-    #compute_target = ws.compute_targets["test-2-2-21"]
-
     logging.info("compute target set")
 
-    #ds = Dataset.get_by_name(ws, 'test')
-    #logging.info("dataset retrieved")
-    #ds = Dataset.Tabular.from_delimited_files(path = [(datastore, ('auto-uplift-output/original_03-29-2021.csv'))],validate=False)
     all_ds = Dataset.get_all(ws)
     logging.info("got all datasets")
     logging.info(all_ds)
@@ -42,8 +32,3 @@ def main(req: func.HttpRequest, context: func.Context) -> func.HttpResponse:
     dstwo = Dataset.get_by_name(ws, name='jesumeWS')
     dstwo.download(target_path='.', overwrite=False)
     logging.info("got dataset")
-
-
-
-
-
